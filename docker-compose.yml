@@ -1,0 +1,14 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: event_management
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: trustblock
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - 3306:3306
