@@ -1,15 +1,23 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { LoginDto } from 'src/dto/LoginDto';
+import { AuthDto, authSchema } from 'src/dto/AuthDto';
+import { YupValidationPipe } from 'src/utils/yupValidationPipe';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  @UsePipes(new YupValidationPipe(authSchema))
+  async login(@Body() authDto: AuthDto) {
+    return this.authService.login(authDto);
+  }
+
+  @Post('register')
+  @UsePipes(new YupValidationPipe(authSchema))
+  async register(@Body() authDto: AuthDto) {
+    return this.authService.register(authDto);
   }
 
   @Post('protected')

@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../users/user.service';
-import { LoginDto } from 'src/dto/LoginDto';
+import { AuthDto } from 'src/dto/AuthDto';
 
 @Injectable()
 export class AuthService {
@@ -10,22 +10,28 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(loginDto: LoginDto) {
-    const user = await this.userService.validateUser(
-      loginDto.username,
-      loginDto.password,
+  async login(authDto: AuthDto) {
+    const check = await this.userService.validateUser(
+      authDto.email,
+      authDto.password,
     );
-
-    if (!user) {
-      // Handle invalid credentials
+      console.log("Check User", check);
+    if (check.code !== HttpStatus.OK) {
+      return check;
     }
 
-    const payload = { sub: user.id };
-    const accessToken = this.jwtService.sign(payload);
+    const payload = { sub: check.data };
+    const accessToken = this.jwtService.sign(payload, { secret: process.env.JWT_SECRET });
 
     return {
-      access_token: accessToken,
+      code: check.code,
+      message: check.message,
+      data: accessToken,
     };
+  }
+
+  async register (authDto: AuthDto) {
+    return await this.userService.create(authDto.email, authDto.password);
   }
 }
 

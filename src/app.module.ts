@@ -8,13 +8,17 @@ import { JwtStrategy } from './jwt/jwt.strategy';
 import { UserModule } from './users/user.module';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from './users/user.service';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtAuthModule,
-    UserModule
+    UserModule,
+    AuthModule,
+    ConfigModule.forRoot()
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, ConfigService, UserService, JwtStrategy],
