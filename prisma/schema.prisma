@@ -22,5 +22,6 @@ model Event {
   name      String
   createdAt DateTime @default(now())
   description String
-  date        String
+  city        String
+  date        DateTime
 }

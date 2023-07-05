@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { UserService } from './users/user.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { EventsModule } from './events/events.module';
 
 
 @Module({
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
     JwtAuthModule,
     UserModule,
     AuthModule,
+    EventsModule,
     ConfigModule.forRoot()
   ],
   controllers: [AppController],
