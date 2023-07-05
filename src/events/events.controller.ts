@@ -1,21 +1,29 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UsePipes, Request, UseGuards, Query } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { EventDto, eventsSchema } from 'src/dto/EventDto';
 import { YupValidationPipe } from 'src/utils/yupValidationPipe';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
 @Controller("events")
 export class EventsController {
     constructor(private readonly eventsService: EventsService) { }
 
     @Get()
-    getAllEvents() {
-        return this.eventsService.getAllEvents();
-    }
+    getAllEvents(
+        @Query('page') page: number = 1,
+        @Query('count') count: number = 10,
+        @Query('search') search: string = '',
+        @Query('date') date: string = '',
+        @Query('cities') cities: string = '',
+      ) {
+        return this.eventsService.getAllEvents(parseInt(page.toString()), parseInt(count.toString()), search, date, cities);
+      }
 
     @Post()
     @UsePipes(new YupValidationPipe(eventsSchema))
-    async create(@Body() eventDto: EventDto) {
-        const result = await this.eventsService.createEvent(eventDto);
+    @UseGuards(JwtAuthGuard)
+    async create(@Body() eventDto: EventDto, @Request() { user }) {
+        const result = await this.eventsService.createEvent(eventDto, user.id);
         return {
             code: HttpStatus.OK,
             message: "Event Created succesfully",
@@ -41,13 +49,14 @@ export class EventsController {
     }
 
     @Patch(':id')
-    async updateEvent(@Param('id') id: string, @Body() updateEventDto: EventDto) {
-        const eventObj = await this.eventsService.getEventById(parseInt(id));
+    @UseGuards(JwtAuthGuard)
+    async updateEvent(@Param('id') id: string, @Body() updateEventDto: EventDto, @Request() { user }) {
+        const eventObj = await this.eventsService.getEventByIdAndUserId(parseInt(id), user.id);
         if (eventObj) {
             eventObj.name = updateEventDto.name;
             eventObj.description = updateEventDto.description;
             eventObj.date = updateEventDto.date;
-            eventObj.city = updateEventDto.city;
+            eventObj.cityId = updateEventDto.cityId;
             const updatedEvent = await this.eventsService.updateEvent(eventObj, parseInt(id));
             return {
                 code: HttpStatus.OK,
@@ -63,8 +72,9 @@ export class EventsController {
     }
 
     @Delete(':id')
-    async deleteEvent(@Param('id') id: string) {
-        const eventObj = await this.eventsService.getEventById(parseInt(id));
+    @UseGuards(JwtAuthGuard)
+    async deleteEvent(@Param('id') id: string, @Request() { user }) {
+        const eventObj = await this.eventsService.getEventByIdAndUserId(parseInt(id), user.id);
         if (eventObj) {
             const deletedEvent = await this.eventsService.deleteEvent(parseInt(id));
             return {
