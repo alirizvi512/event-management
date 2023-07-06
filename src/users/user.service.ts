@@ -1,8 +1,8 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './../prisma.service';
-import { generateSalt, verifyHash } from 'src/utils/hash';
-import { mail } from 'src/utils/mailer';
-import { codeGenerator } from 'src/utils/codeGenerator';
+import { generateSalt, verifyHash } from './../utils/hash';
+import { mail } from './../utils/mailer';
+import { codeGenerator } from './../utils/codeGenerator';
 
 @Injectable()
 export class UserService {

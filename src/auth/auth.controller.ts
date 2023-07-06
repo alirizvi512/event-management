@@ -1,8 +1,8 @@
 import { Controller, Post, Body, UseGuards, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { AuthDto, authSchema } from 'src/dto/AuthDto';
-import { YupValidationPipe } from 'src/utils/yupValidationPipe';
+import { AuthDto, authSchema } from './../dto/AuthDto';
+import { YupValidationPipe } from './../utils/yupValidationPipe';
 
 @Controller('auth')
 export class AuthController {
