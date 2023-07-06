@@ -1,6 +1,8 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './../prisma.service';
 import { generateSalt, verifyHash } from 'src/utils/hash';
+import { mail } from 'src/utils/mailer';
+import { codeGenerator } from 'src/utils/codeGenerator';
 
 @Injectable()
 export class UserService {
@@ -21,11 +23,21 @@ export class UserService {
       where: { email: email }
     })
     if (user) {
-      const result = await verifyHash(password, user.password);
-      if (result) {
-        return { code: HttpStatus.OK, message: "Succesfully Logged In", data: user.id };  
+      if (user.verified) {
+        const result = await verifyHash(password, user.password);
+        if (result) {
+          return { code: HttpStatus.OK, message: "Succesfully Logged In", data: user.id };
+        } else {
+          return { code: HttpStatus.BAD_REQUEST, message: "Invalid Credentials" };
+        }
       } else {
-        return { code: HttpStatus.BAD_REQUEST, message: "Invalid Credentials" };
+        const verificationCode = await codeGenerator();
+        await mail(email, verificationCode);
+        await this.prisma.user.update({
+          where: { id: user.id },
+          data: { ...user, verificationCode: verificationCode },
+        });
+        return { code: HttpStatus.UNAUTHORIZED, message: "User not Verified. Verification code has been sent again.", data: user.id };
       }
     }
     return { code: HttpStatus.NOT_FOUND, message: "User not found with the specified email" };
@@ -39,7 +51,13 @@ export class UserService {
       return { code: HttpStatus.BAD_REQUEST, message: "User Already Exists" };
     }
     const hashedPassword = await generateSalt(password);
-    const user = await this.prisma.user.create({ data: { email, password: hashedPassword } });
+    const verificationCode = await codeGenerator();
+    const user = await this.prisma.user.create({ data: { email, password: hashedPassword, verificationCode } });
+    await mail(email, verificationCode);
     return { code: HttpStatus.OK, message: "Succesfully Created", data: user.id };  
+  }
+
+  async verifyUser(id: number) {
+    await this.prisma.user.update({ where: { id }, data: { verified: true } });
   }
 }

@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UsePipes, Request, UseGuards, Query } from '@nestjs/common';
 import { EventsService } from './events.service';
-import { EventDto, eventsSchema } from 'src/dto/EventDto';
-import { YupValidationPipe } from 'src/utils/yupValidationPipe';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { EventDto, eventsSchema } from './../dto/EventDto';
+import { YupValidationPipe } from './../utils/yupValidationPipe';
+import { JwtAuthGuard } from './../guards/jwt-auth.guard';
 
 @Controller("events")
 export class EventsController {

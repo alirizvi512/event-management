@@ -7,7 +7,7 @@ export class EventsService {
     constructor(private readonly prisma: PrismaService) { }
 
     async createEvent(event: EventDto, userId: number) {
-        await this.prisma.event.create({ data: { ...event, date: new Date(event.date), cityId: parseInt(event.cityId.toString()), userId } });
+        return this.prisma.event.create({ data: { ...event, date: new Date(event.date), cityId: parseInt(event.cityId.toString()), userId } });
     }
 
     async getAllEvents(page: number, count: number, search: string, date: string, cities: string) {
