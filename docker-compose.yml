@@ -1,14 +1,26 @@
-version: '3'
+version: '3.8'
 services:
-  db:
+  nest-api:
+    container_name: nest-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+
+  mysql:
     image: mysql
-    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - '3306:3306'
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: event_management
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: trustblock
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
     volumes:
-      - ./data:/var/lib/mysql
-    ports:
-      - 3306:3306
+      - ./prisma/data:/var/lib/mysql
