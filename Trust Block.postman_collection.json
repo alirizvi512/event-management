@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "543e71a6-c4ab-4a2c-a0c1-70e9d7836099",
+		"name": "Trust Block",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "484913"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "safazasolutions@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "bro123=H$",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://ec2-16-171-44-85.eu-north-1.compute.amazonaws.com:3000/auth/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "safazasolutions@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "bro123=H$",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://ec2-16-171-44-85.eu-north-1.compute.amazonaws.com:3000/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Event",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY4ODc2MTc4MH0.x8kEq1lsYzJywKlQuSmAAl5OpHSouyq8tXbmupFMLK8"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "WIPL",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Sports",
+							"type": "text"
+						},
+						{
+							"key": "cityId",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "2023-08-25",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://ec2-16-171-44-85.eu-north-1.compute.amazonaws.com:3000/events"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ec2-16-171-44-85.eu-north-1.compute.amazonaws.com:3000/events?page=1&count=10",
+					"protocol": "http",
+					"host": [
+						"ec2-16-171-44-85",
+						"eu-north-1",
+						"compute",
+						"amazonaws",
+						"com"
+					],
+					"port": "3000",
+					"path": [
+						"events"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "count",
+							"value": "10"
+						},
+						{
+							"key": "cities",
+							"value": "dubai,istanbul",
+							"disabled": true
+						},
+						{
+							"key": "search",
+							"value": "sports",
+							"disabled": true
+						},
+						{
+							"key": "date",
+							"value": "2023-10-01",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Event By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ec2-16-171-44-85.eu-north-1.compute.amazonaws.com:3000/events/:id",
+					"protocol": "http",
+					"host": [
+						"ec2-16-171-44-85",
+						"eu-north-1",
+						"compute",
+						"amazonaws",
+						"com"
+					],
+					"port": "3000",
+					"path": [
+						"events",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "89"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Event By Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY4ODU5MzQ2MX0.y8Qt6jPbNaDLkIu_VgVUe759OeXr60nEvTNbEtjvclI"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://ec2-16-171-44-85.eu-north-1.compute.amazonaws.com:3000/events/:id",
+					"protocol": "http",
+					"host": [
+						"ec2-16-171-44-85",
+						"eu-north-1",
+						"compute",
+						"amazonaws",
+						"com"
+					],
+					"port": "3000",
+					"path": [
+						"events",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Event By Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY4ODc2Mjc2Nn0.Xo79a9Exq6HoqIQjAO-YqHcZiwVU-hbyEttj2JK-aCA"
+					}
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "AFRO Asia",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Sports",
+							"type": "text"
+						},
+						{
+							"key": "cityId",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "2023-02-14",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://ec2-16-171-44-85.eu-north-1.compute.amazonaws.com:3000/events/:id",
+					"protocol": "http",
+					"host": [
+						"ec2-16-171-44-85",
+						"eu-north-1",
+						"compute",
+						"amazonaws",
+						"com"
+					],
+					"port": "3000",
+					"path": [
+						"events",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Verification",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY4ODc2MTYxOX0.CS7U39ebrmkfKuM4F91zOMmO4jEazGntAPv9CZWM-Hw"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ec2-16-171-44-85.eu-north-1.compute.amazonaws.com:3000/users/verify/:code",
+					"protocol": "http",
+					"host": [
+						"ec2-16-171-44-85",
+						"eu-north-1",
+						"compute",
+						"amazonaws",
+						"com"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"verify",
+						":code"
+					],
+					"variable": [
+						{
+							"key": "code",
+							"value": "131791"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
