@@ -1,26 +1,23 @@
-FROM node:latest as builder
+# Base image
+FROM node:19
 
-# Create app directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# Copy package.json and package-lock.json
 COPY package*.json ./
-COPY prisma ./prisma/
 
-# Install app dependencies
+# Install dependencies
 RUN npm install
 
+# Copy source code
 COPY . .
 
+# Build the NestJS application
 RUN npm run build
 
-FROM node:latest
-
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
-
+# Expose the application port
 EXPOSE 3000
-# 👇 new migrate and start app script
-CMD [  "npm", "run", "start:migrate:prod" ]
+
+# Start the application
+CMD [ "npm", "run", "start:migrate:prod" ]

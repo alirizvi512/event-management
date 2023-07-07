@@ -22,8 +22,15 @@ $ yarn install
 
 Setup the .env file, .env.example is placed in the project root directory.
 
-### Running Migrations & Seed
+### Running Application (Docker)
 
+```bash
+$ docker-compose up -d db
+$ docker-compose up --build
+```
+
+### Running Application (Locally)
+Assuming you have mysql installed in your system
 First of all run migration and seed before starting the project.
 
 ```bash
