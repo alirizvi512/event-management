@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -24,8 +27,8 @@
     "db:migrate:status": "prisma migrate status",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:generate": "prisma generate",
-    "db:seed": "npx ts-node ./prisma/seed.ts",
-    "start:migrate:prod": "prisma generate && prisma migrate deploy && npm run db:seed && npm run start:prod"
+    "db:seed": "prisma db seed",
+    "prod-app": "prisma generate && npm run db:migrate && npm run start:prod"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
