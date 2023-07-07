@@ -56,7 +56,7 @@ export class EventsController {
             eventObj.name = updateEventDto.name;
             eventObj.description = updateEventDto.description;
             eventObj.date = updateEventDto.date;
-            eventObj.cityId = updateEventDto.cityId;
+            eventObj.cityId = parseInt(updateEventDto.cityId.toString());
             const updatedEvent = await this.eventsService.updateEvent(eventObj, parseInt(id));
             return {
                 code: HttpStatus.OK,
